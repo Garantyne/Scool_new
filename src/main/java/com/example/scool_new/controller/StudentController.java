@@ -1,5 +1,6 @@
 package com.example.scool_new.controller;
 
+import com.example.scool_new.model.Faculty;
 import com.example.scool_new.model.Student;
 import com.example.scool_new.service.StudentService;
 import org.springframework.http.ResponseEntity;
@@ -47,5 +48,15 @@ public class StudentController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(stu);
+    }
+
+    @GetMapping("/sort/{ageFrom},{ageTo}")
+    public ResponseEntity<Collection<Student>> findByAgeBetween(@PathVariable int ageFrom,@PathVariable int ageTo){
+        return studentService.findByAgeBetween(ageFrom,ageTo);
+    }
+
+    @GetMapping("/{id}/faculty")
+    public Faculty findFaculty(long id){
+        return studentService.findFaculty(id);
     }
 }

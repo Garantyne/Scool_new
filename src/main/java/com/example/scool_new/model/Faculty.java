@@ -1,6 +1,7 @@
 package com.example.scool_new.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "faculty")
@@ -10,6 +11,9 @@ public class Faculty {
     private Long id;
     private String name;
     private String color;
+
+    @OneToMany(mappedBy = "faculty")
+    private List<Student> students;
     public Faculty(){}
 
     public Faculty(Long id, String name, String color) {
@@ -40,5 +44,13 @@ public class Faculty {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 }
