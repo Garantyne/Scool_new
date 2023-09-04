@@ -1,7 +1,9 @@
 package com.example.scool_new.service;
 
+import com.example.scool_new.model.Faculty;
 import com.example.scool_new.model.Student;
 import com.example.scool_new.repositorys.StudentRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,7 +34,6 @@ public class StudentService {
 
     public void deleteStudent(long id){
         studentRepository.deleteById(id);
-
     }
 
     public Collection<Student> findStudentByAge(int age) {
@@ -43,5 +44,22 @@ public class StudentService {
             }
         }
         return stud;
+    }
+
+    public ResponseEntity<Collection<Student>> findByAgeBetween(int ageFrom, int ageTo) {
+        Collection<Student> stu = studentRepository.findByAgeBetween(ageFrom,ageTo);
+        if(stu == null){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(stu);
+    }
+
+    public Faculty findFaculty(long id) {
+        return studentRepository.findById(id).get().getFaculty();
+    }
+
+    public Student findStudent(Long id){
+        Optional<Student> stu = studentRepository.findById(id);
+        return stu.orElse(null);
     }
 }
