@@ -1,5 +1,7 @@
 package com.example.scool_new.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class Faculty {
     private String color;
 
     @OneToMany(mappedBy = "faculty")
+    @JsonIgnore
     private List<Student> students;
     public Faculty(){}
 
@@ -53,4 +56,5 @@ public class Faculty {
     public void setStudents(List<Student> students) {
         this.students = students;
     }
+
 }

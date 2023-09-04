@@ -34,7 +34,6 @@ public class StudentService {
 
     public void deleteStudent(long id){
         studentRepository.deleteById(id);
-
     }
 
     public Collection<Student> findStudentByAge(int age) {
@@ -57,5 +56,10 @@ public class StudentService {
 
     public Faculty findFaculty(long id) {
         return studentRepository.findById(id).get().getFaculty();
+    }
+
+    public Student findStudent(Long id){
+        Optional<Student> stu = studentRepository.findById(id);
+        return stu.orElse(null);
     }
 }
