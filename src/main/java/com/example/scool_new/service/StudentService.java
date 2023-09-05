@@ -62,4 +62,16 @@ public class StudentService {
         Optional<Student> stu = studentRepository.findById(id);
         return stu.orElse(null);
     }
+
+    public int getStudentOfSchool(){
+        return studentRepository.getNumbersAllStudent();
+    }
+
+    public double getAvgOfStudents(){
+        return studentRepository.getAvgAgeOfStudents();
+    }
+
+    public Collection<Student> fiveLastStudents(){
+        return studentRepository.getFiveLastStudents();
+    }
 }

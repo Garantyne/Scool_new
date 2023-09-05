@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("avatar")
@@ -28,7 +29,8 @@ public class AvatarController {
     }
 
     @PostMapping(value = "/{id}/avatar",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadAvatar(@PathVariable Long id, @RequestParam MultipartFile avatar)throws IOException {
+    public ResponseEntity<String> uploadAvatar(@PathVariable Long id,
+                                               @RequestParam MultipartFile avatar)throws IOException {
         if(avatar.getSize()>=1024*300){
             return ResponseEntity.badRequest().body("File is not begin");
         }
@@ -38,6 +40,7 @@ public class AvatarController {
 
     @GetMapping(value = "/{id}/avatar/priview")
     public ResponseEntity<byte[]> downloadAvatar(@PathVariable long id){
+
         Avatar avatar = avatarService.findAvatar(id);
 
         HttpHeaders headers = new HttpHeaders();
@@ -62,5 +65,11 @@ public class AvatarController {
             response.setContentLength((int)avatar.getFileSize());
             is.transferTo(os);
         }
+    }
+    @GetMapping("{page}/{size}/avatar")
+    public ResponseEntity<Collection<Avatar>> getAllAvatar(@RequestParam("page")Integer numPage,
+                                                          @RequestParam("size") Integer numSize){
+        Collection<Avatar> avatars = avatarService.getAllAvatars(numPage,numSize);
+        return ResponseEntity.ok(avatars);
     }
 }
