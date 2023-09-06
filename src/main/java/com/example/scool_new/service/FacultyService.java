@@ -1,11 +1,13 @@
 package com.example.scool_new.service;
 
 import com.example.scool_new.model.Faculty;
+import com.example.scool_new.model.Student;
 import com.example.scool_new.repositorys.FacultyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,5 +45,14 @@ public class FacultyService {
             }
         }
         return fac;
+    }
+
+    public Collection<Faculty> findFacultyByColorOrName(String colorOrName) {
+        return facultyRepository.findAllByColorContainingIgnoreCaseOrNameContainingIgnoreCase(colorOrName,colorOrName);
+    }
+
+    public List<Student> findStudents(long id) {
+        List<Student> stu = facultyRepository.findById(id).get().getStudents();
+        return stu;
     }
 }

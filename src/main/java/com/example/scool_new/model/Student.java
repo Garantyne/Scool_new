@@ -3,6 +3,7 @@ package com.example.scool_new.model;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "student")
@@ -12,6 +13,8 @@ public class Student {
     private Long id;
     private String name;
     private int age;
+    @ManyToOne
+    private Faculty faculty;
     public Student(){}
 
     public Student(Long id, String name, int age) {
@@ -42,5 +45,13 @@ public class Student {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 }
