@@ -1,5 +1,7 @@
 package com.example.scool_new.service;
 
+import com.example.scool_new.dto.AvatarDto;
+import com.example.scool_new.mapper.AvatarMapper;
 import com.example.scool_new.model.Avatar;
 import com.example.scool_new.model.Student;
 import com.example.scool_new.repositorys.AvatarRepository;
@@ -18,6 +20,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -30,10 +34,12 @@ public class AvatarService {
     private String avatarDir;
     private final AvatarRepository avatarRepository;
     private final StudentService studentService;
+    private final AvatarMapper avatarMapper;
 
-    public AvatarService(AvatarRepository avatarRepository, StudentService studentService) {
+    public AvatarService(AvatarRepository avatarRepository, StudentService studentService, AvatarMapper avatarMapper) {
         this.avatarRepository = avatarRepository;
         this.studentService = studentService;
+        this.avatarMapper = avatarMapper;
     }
 
     public void uploadAvatar(Long id, MultipartFile file) throws IOException {
@@ -106,6 +112,15 @@ public class AvatarService {
 
     public Collection<Avatar> getAllAvatars(Integer numPage, Integer numSize) {
         PageRequest pageRequest = PageRequest.of(numPage - 1,numSize);
-        return avatarRepository.findAll(pageRequest).getContent();
+        return avatarRepository.findAll(pageRequest).stream().collect(Collectors.toList());
+    }
+
+    public Collection<Avatar> getPage(){
+        return null;
+    }
+
+    public List<AvatarDto> page(int pageNum, int sizeNum) {
+        return avatarRepository.findAll(PageRequest.of(pageNum,sizeNum)).stream()
+                .map(avatarMapper::toDto).collect(Collectors.toList());
     }
 }

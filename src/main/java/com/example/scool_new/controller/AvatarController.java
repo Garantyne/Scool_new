@@ -1,5 +1,6 @@
 package com.example.scool_new.controller;
 
+import com.example.scool_new.dto.AvatarDto;
 import com.example.scool_new.model.Avatar;
 import com.example.scool_new.service.AvatarService;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("avatar")
@@ -70,6 +72,15 @@ public class AvatarController {
     public ResponseEntity<Collection<Avatar>> getAllAvatar(@RequestParam("page")Integer numPage,
                                                           @RequestParam("size") Integer numSize){
         Collection<Avatar> avatars = avatarService.getAllAvatars(numPage,numSize);
+
+
         return ResponseEntity.ok(avatars);
+    }
+
+    @GetMapping
+    public List<AvatarDto> page(@RequestParam(value = "page",required = false,defaultValue = "0") int pageNum,
+                                @RequestParam(value = "size",required = false,defaultValue = "10") int sizeNum){
+        return avatarService.page(pageNum,sizeNum);
+
     }
 }
