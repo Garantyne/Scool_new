@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Student
+      changes:
+        - sqlFile:
+            path: liquibase/scripts/student.sql
