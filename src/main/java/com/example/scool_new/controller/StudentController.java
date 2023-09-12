@@ -79,4 +79,9 @@ public class StudentController {
     public Collection<Student> getFiveLastStudents(){
         return studentService.fiveLastStudents();
     }
+
+    @GetMapping("/student/{letter}/getNameByLetter")
+    public Collection<Student> getFilterName(@PathVariable String letter){
+        return studentService.filterStudentByLetter(letter);
+    }
 }

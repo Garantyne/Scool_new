@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -98,5 +99,11 @@ public class StudentService {
         logger.info("Was invoked method for get 5 last student");
         logger.debug(" Get 5 last students");
         return studentRepository.getFiveLastStudents();
+    }
+
+    public Collection<Student> filterStudentByLetter(String letter) {
+        return studentRepository.findAll().stream()
+                .filter(c->c.getName().startsWith(letter))
+                .collect(Collectors.toList());
     }
 }
