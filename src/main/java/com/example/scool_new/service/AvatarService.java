@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -134,5 +135,13 @@ public class AvatarService {
         logger.info("Was invoked method for page avatar");
         return avatarRepository.findAll(PageRequest.of(pageNum,sizeNum)).stream()
                 .map(avatarMapper::toDto).collect(Collectors.toList());
+    }
+
+    public Integer unknow() {
+        int sum = Stream.iterate(1, a -> a +1)
+                .parallel()
+                .limit(1_000_000)
+                .reduce(0, (a, b) -> a + b );
+        return sum;
     }
 }

@@ -84,4 +84,9 @@ public class StudentController {
     public Collection<Student> getFilterName(@PathVariable String letter){
         return studentService.filterStudentByLetter(letter);
     }
+
+    @GetMapping("/avgAllStudStream")
+    public Double getAvgStream(){
+        return studentService.getAvgStream();
+    }
 }

@@ -69,4 +69,9 @@ public class FacultyController {
         }
         return ResponseEntity.ok(stu);
     }
+
+    @GetMapping("/longName")
+    public String getLongName(){
+        return facultyService.getLongNameFaculty();
+    }
 }

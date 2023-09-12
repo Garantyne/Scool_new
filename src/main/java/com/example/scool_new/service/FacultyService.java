@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class FacultyService {
@@ -63,5 +60,12 @@ public class FacultyService {
         logger.info("Was invoked method for find students by id of faculty");
         List<Student> stu = facultyRepository.findById(id).get().getStudents();
         return stu;
+    }
+
+    public String getLongNameFaculty() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElse("");
     }
 }

@@ -106,4 +106,10 @@ public class StudentService {
                 .filter(c->c.getName().startsWith(letter))
                 .collect(Collectors.toList());
     }
+
+    public Double getAvgStream() {
+        return studentRepository.findAll().stream()
+                .mapToInt(Student::getAge)
+                .average().getAsDouble();
+    }
 }

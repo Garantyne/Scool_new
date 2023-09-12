@@ -81,6 +81,10 @@ public class AvatarController {
     public List<AvatarDto> page(@RequestParam(value = "page",required = false,defaultValue = "0") int pageNum,
                                 @RequestParam(value = "size",required = false,defaultValue = "10") int sizeNum){
         return avatarService.page(pageNum,sizeNum);
+    }
 
+    @GetMapping("/unknow")
+    public Integer unknowMethod(){
+        return avatarService.unknow();
     }
 }
