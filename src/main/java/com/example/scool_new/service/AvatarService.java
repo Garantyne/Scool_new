@@ -7,6 +7,8 @@ import com.example.scool_new.model.Student;
 import com.example.scool_new.repositorys.AvatarRepository;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,8 @@ public class AvatarService {
     private final StudentService studentService;
     private final AvatarMapper avatarMapper;
 
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     public AvatarService(AvatarRepository avatarRepository, StudentService studentService, AvatarMapper avatarMapper) {
         this.avatarRepository = avatarRepository;
         this.studentService = studentService;
@@ -43,6 +47,8 @@ public class AvatarService {
     }
 
     public void uploadAvatar(Long id, MultipartFile file) throws IOException {
+        logger.debug("Requesting avatar for student: {}",id);
+        logger.info("Was invoked method for upload avatar");
         Student student = studentService.findStudent(id);
             //это сохраняет на диск
         Path filePath = Path.of(avatarDir, id + "." + getExtension(file.getOriginalFilename()));
@@ -66,6 +72,7 @@ public class AvatarService {
     }
 
     private byte[] generateImageData(Path filePath) throws IOException {
+        logger.info("Was invoked method for generate image avatar");
         try(InputStream is = Files.newInputStream(filePath);
             BufferedInputStream bis = new BufferedInputStream(is,1024);
             ByteArrayOutputStream baos = new ByteArrayOutputStream()){
@@ -85,15 +92,18 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(Long id) {
+        logger.info("Was invoked method for find avatar");
         return avatarRepository.findByStudentId(id).orElse(new Avatar());
     }
 
 
     private String getExtension(String fileName) {
+        logger.info("Was invoked method for get Extension avatar");
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
     private byte[] generateDataForDB(Path filePath)throws IOException{
+        logger.info("Was invoked method for generate data for DB avatar");
         try(
             InputStream is = Files.newInputStream(filePath);
             BufferedInputStream bis = new BufferedInputStream(is,1024);
@@ -111,6 +121,7 @@ public class AvatarService {
     }
 
     public Collection<Avatar> getAllAvatars(Integer numPage, Integer numSize) {
+        logger.info("Was invoked method for get all avatars");
         PageRequest pageRequest = PageRequest.of(numPage - 1,numSize);
         return avatarRepository.findAll(pageRequest).stream().collect(Collectors.toList());
     }
@@ -120,6 +131,7 @@ public class AvatarService {
     }
 
     public List<AvatarDto> page(int pageNum, int sizeNum) {
+        logger.info("Was invoked method for page avatar");
         return avatarRepository.findAll(PageRequest.of(pageNum,sizeNum)).stream()
                 .map(avatarMapper::toDto).collect(Collectors.toList());
     }
