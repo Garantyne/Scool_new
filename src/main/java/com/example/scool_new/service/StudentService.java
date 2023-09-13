@@ -8,14 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
     private final StudentRepository studentRepository;
+
     Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     public StudentService(StudentRepository studentRepository) {
@@ -111,5 +110,48 @@ public class StudentService {
         return studentRepository.findAll().stream()
                 .mapToInt(Student::getAge)
                 .average().getAsDouble();
+    }
+
+    public void getStudentStream() {
+        List<Student> stu =  studentRepository.findAll();
+        System.out.println(stu.get(0).getName());
+        System.out.println(stu.get(1).getName());
+        new Thread(){
+            @Override
+            public void run(){
+                System.out.println(stu.get(2).getName());
+                System.out.println(stu.get(3).getName());
+            }
+        }.start();
+
+        new Thread(()->{
+            System.out.println(stu.get(4).getName());
+            System.out.println(stu.get(5).getName());
+        }).start();
+    }
+
+    public void getStudentStreamTwo() {
+        List<Student> stu = studentRepository.findAll();
+        ShowStudent(stu.get(0));
+        ShowStudent(stu.get(1));
+        Thread thread = new Thread(){
+            @Override
+            public void run(){
+                ShowStudent(stu.get(2));
+                ShowStudent(stu.get(3));
+            }
+        };
+        Thread thread2 = new Thread(()->{
+            ShowStudent(stu.get(4));
+            ShowStudent(stu.get(5));
+        });
+        thread.start();
+        thread2.start();
+    }
+
+    private void ShowStudent(Student student){
+        synchronized (Student.class){
+            System.out.println(student.getName());
+        }
     }
 }

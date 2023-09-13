@@ -89,4 +89,14 @@ public class StudentController {
     public Double getAvgStream(){
         return studentService.getAvgStream();
     }
+
+    @GetMapping("/getStreamOne")
+    public void getStudentsStream(){
+        studentService.getStudentStream();
+    }
+
+    @GetMapping("/getStreamTwo")
+    public void getStudentsStreamTwo(){
+        studentService.getStudentStreamTwo();
+    }
 }
