@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("faculty")
@@ -50,5 +51,27 @@ public class FacultyController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(fac);
+    }
+
+    @GetMapping("/filter/{colorOrName}")
+    public ResponseEntity<Collection<Faculty>> findFacultyByColorOrName(@PathVariable String colorOrName){
+        Collection <Faculty> fac = facultyService.findFacultyByColorOrName(colorOrName);
+        if(fac == null){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(fac);
+    }
+    @GetMapping("/students/{id}")
+    public ResponseEntity<List<Student>> findStudents(@PathVariable("id") long id){
+        List<Student> stu = facultyService.findStudents(id);
+        if(stu == null){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(stu);
+    }
+
+    @GetMapping("/longName")
+    public String getLongName(){
+        return facultyService.getLongNameFaculty();
     }
 }
