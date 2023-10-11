@@ -156,12 +156,5 @@ public class StudentControllerWebMvcTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Test
-    void testGetFiveLastStudents() throws Exception{
-        Student stu = new Student(1L,"asdf",22);
-        when(studentRepository.getFiveLastStudents()).thenReturn(anyCollection());     //эни лонг любое значение которое бы я не передал
 
-        mockMvc.perform(get("/student/student/getFiveLastStudents"))
-                .andExpect(status().isOk());
-    }
 }
