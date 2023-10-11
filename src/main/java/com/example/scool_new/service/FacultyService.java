@@ -25,16 +25,17 @@ public class FacultyService {
 
     public Faculty getFaculty(long id){
         Optional<Faculty> fac = facultyRepository.findById(id);
-        return fac.orElseGet(fac::get);
+        return fac.orElse(null);
     }
 
     public Faculty updateFaculty(Faculty faculty){
         return facultyRepository.save(faculty);
     }
 
-    public void deleteFaculty(long id){
+    public Faculty deleteFaculty(long id){
+        Optional<Faculty> f = facultyRepository.findById(id);
         facultyRepository.deleteById(id);
-
+        return f.orElse(null);
     }
 
     public Collection<Faculty> findFacultyByColor(String color) {
@@ -52,7 +53,7 @@ public class FacultyService {
     }
 
     public List<Student> findStudents(long id) {
-        List<Student> stu = facultyRepository.findById(id).get().getStudents();
-        return stu;
+        Optional<Faculty> facultyOptional = facultyRepository.findById(id);
+        return facultyOptional.map(Faculty::getStudents).orElse(null);
     }
 }

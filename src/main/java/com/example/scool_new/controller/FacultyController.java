@@ -28,7 +28,7 @@ public class FacultyController {
     public ResponseEntity<Faculty> getFaculty(@PathVariable long id){
         Faculty fac = facultyService.getFaculty(id);
         if(fac == null){
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(fac);
     }
@@ -39,16 +39,19 @@ public class FacultyController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteFaculty(@PathVariable long id){
-       facultyService.deleteFaculty(id);
-       return ResponseEntity.ok().build();
+    public ResponseEntity<Faculty> deleteFaculty(@PathVariable long id){
+        Faculty fac = facultyService.deleteFaculty(id);
+       if( fac == null){
+           return ResponseEntity.notFound().build();
+       }
+       return ResponseEntity.ok(fac);
     }
 
     @GetMapping("/color/{color}")
-    public ResponseEntity<Collection<Faculty>> findFacultyByColor(String color){
+    public ResponseEntity<Collection<Faculty>> findFacultyByColor(@PathVariable String color){
         Collection<Faculty> fac = facultyService.findFacultyByColor(color);
-        if(fac == null){
-            return ResponseEntity.badRequest().build();
+        if(fac.isEmpty()){
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(fac);
     }
@@ -56,16 +59,17 @@ public class FacultyController {
     @GetMapping("/filter/{colorOrName}")
     public ResponseEntity<Collection<Faculty>> findFacultyByColorOrName(@PathVariable String colorOrName){
         Collection <Faculty> fac = facultyService.findFacultyByColorOrName(colorOrName);
-        if(fac == null){
+        if(fac.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(fac);
     }
+
     @GetMapping("/students/{id}")
     public ResponseEntity<List<Student>> findStudents(@PathVariable("id") long id){
         List<Student> stu = facultyService.findStudents(id);
         if(stu == null){
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(stu);
     }

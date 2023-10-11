@@ -11,16 +11,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("student")
 public class StudentController {
     private final StudentService studentService;
-    private final AvatarService avatarService;
 
-    public StudentController(StudentService studentService, AvatarService avatarService) {
+
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
-        this.avatarService = avatarService;
+
     }
 
     @PostMapping
@@ -44,13 +45,14 @@ public class StudentController {
 
     @DeleteMapping("{id}")
     public ResponseEntity deleteStudent(@PathVariable long id){
+        studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("age/{age}")
     public ResponseEntity<Collection<Student>> findStudentByAge(@PathVariable int age){
         Collection<Student> stu = studentService.findStudentByAge(age);
-        if(stu == null){
+        if(stu.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(stu);
@@ -63,7 +65,11 @@ public class StudentController {
 
     @GetMapping("/faculty/{id}")
     public Faculty findFaculty(@PathVariable("id") long id){
-        return studentService.findFaculty(id);
+        Optional<Faculty> fac = studentService.findFaculty(id);
+        if(fac.isEmpty()){
+            return null;
+        }
+        return fac.get();
     }
 
     @GetMapping("/student/getNumberStudents")

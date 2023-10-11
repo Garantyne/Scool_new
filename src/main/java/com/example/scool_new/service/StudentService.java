@@ -25,7 +25,7 @@ public class StudentService {
 
     public Student getStudent(long id){
         Optional<Student> stu = studentRepository.findById(id);
-        return stu.orElseGet(stu::get);
+        return stu.orElse(null);
     }
 
     public Student updateStudent(Student student){
@@ -54,8 +54,10 @@ public class StudentService {
         return ResponseEntity.ok(stu);
     }
 
-    public Faculty findFaculty(long id) {
-        return studentRepository.findById(id).get().getFaculty();
+    public Optional<Faculty> findFaculty(long id) {
+        Optional<Student> fac = studentRepository.findById(id);
+        Optional<Faculty> faculty = fac.map(Student::getFaculty);
+        return faculty;
     }
 
     public Student findStudent(Long id){
